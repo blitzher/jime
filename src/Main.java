@@ -1,32 +1,43 @@
-import javax.swing.*;
+import javax.swing.UIManager;
+
+import java.util.Vector;
+
+import javax.swing.JFrame;
 
 public class Main {
 
     public final static int WIDTH = 400;
     public final static int HEIGHT = 400;
+    private static Vector<JimeEditor> editors = new Vector<JimeEditor>();
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Jime Editor");
-        JMenuBar menuBar = new JMenuBar();
-        JMenuItem file = new JMenuItem("File");
-        JMenuItem edit = new JMenuItem("Edit");
-        JMenuItem view = new JMenuItem("View");
-        JMenuItem help = new JMenuItem("Help");
-        menuBar.add(file);
-        menuBar.add(edit);
-        menuBar.add(view);
-        menuBar.add(help);
 
-        frame.setSize(400, 400);
-        Editor editor = new Editor(WIDTH - 100, HEIGHT);
+        try {
+            // Use the native top bar for Mac OS
+            if (System.getProperty("os.name").startsWith("Mac"))
+                System.setProperty("apple.laf.useScreenMenuBar", "true");
 
-        frame.add(menuBar);
-        frame.add(editor);
-        // frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        // Exit when escape key is pressed
+        newEditor();
+    }
 
+    private static JimeEditor newEditor() {
+        JimeEditor editor = new JimeEditor(WIDTH, HEIGHT);
+
+        // Print the number of editors
+        System.out.println(String.format("Number of editors: %d", editors.size()));
+
+        editor.setVisible(true);
+        editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        editor.menuBar.emitter.on(JimeEnum.NewFile, () -> {
+            newEditor();
+        });
+        editors.add(editor);
+        return editor;
     }
 }
