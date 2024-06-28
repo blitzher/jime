@@ -1,30 +1,49 @@
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.*;
-import javax.swing.plaf.metal.*;
 
-public class JimeEditor extends JFrame {
+import util.*;
 
-    JTextArea textArea;
-    JimeMenuBar menuBar = new JimeMenuBar();
+public class JimeEditor extends JPanel {
 
-    public JimeEditor(int width, int height) {
+    private JTextArea textArea;
+
+    public JimeEditor() {
         super();
 
         textArea = new JTextArea();
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         textArea.setLineWrap(true);
         textArea.setText(assets.lipsum.Lipsum);
+        // Set monospace font
 
-        try {
-            // Set metal look and feel
-            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            // Set theme to ocean
-            MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-        } catch (Exception e) {
-        }
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = gbc.weighty = 1.0;
 
-        menuBar = new JimeMenuBar();
-        setMenuBar(menuBar);
+        // Create the scroll pane view of the text area
+        JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
 
-        setSize(width, height);
-        add(textArea);
+        // Use the utility class to render line numbers
+        TextLineNumber tln = new TextLineNumber(textArea);
+        scrollPane.setRowHeaderView(tln);
+
+        System.out.println("\nJimeEditor: " + getPreferredSize());
+
+        add(scrollPane, gbc);
+        add(verticalScrollBar, new GridBagConstraints() {
+            {
+                gridx = 1;
+                gridy = 0;
+                fill = GridBagConstraints.VERTICAL;
+                weighty = 1.0;
+            }
+        });
+        // add(textArea, gbc);
     }
 }

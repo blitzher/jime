@@ -4,6 +4,9 @@ import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import util.EventEmitter;
+import util.JimeEnum;
+
 public class JimeMenuBar extends MenuBar implements ActionListener {
 
     EventEmitter emitter = new EventEmitter();
