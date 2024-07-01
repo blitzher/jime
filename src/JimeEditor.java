@@ -25,7 +25,7 @@ public class JimeEditor extends JPanel {
         gbc.weightx = gbc.weighty = 1.0;
 
         // Create the scroll pane view of the text area
-        JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
 

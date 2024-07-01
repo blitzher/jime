@@ -13,7 +13,6 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
 
     public JimeMenuBar() {
         super();
-
         Menu fileMenu = new Menu("File");
         MenuItem menuItemNew = new MenuItem("New");
         MenuItem menuItemOpen = new MenuItem("Open");
