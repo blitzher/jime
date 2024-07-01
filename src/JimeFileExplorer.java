@@ -1,15 +1,14 @@
-import javax.swing.JPanel;
-import javax.swing.JTree;
+import java.awt.Dimension;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.JTree;
 
 public class JimeFileExplorer extends JTree {
 
     public JimeFileExplorer() {
         super();
 
-        // setSize(200, 500);
+        setPreferredSize(
+                new Dimension(150, 600));
 
     }
 

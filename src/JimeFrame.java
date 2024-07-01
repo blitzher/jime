@@ -1,5 +1,4 @@
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -25,32 +24,14 @@ public class JimeFrame {
         }
 
         frame = new JFrame("Jime");
-
-        frame.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = gbc.weighty = 1.0;
+        BorderLayout layout = new BorderLayout();
+        frame.setLayout(layout);
 
         fileExplorer = new JimeFileExplorer();
-        frame.add(fileExplorer, new GridBagConstraints() {
-            {
-                gridx = 0;
-                gridy = 0;
-                fill = GridBagConstraints.BOTH;
-                weightx = 0.3;
-
-            }
-        });
+        frame.add(fileExplorer, BorderLayout.LINE_START);
 
         editor = new JimeEditor();
-        frame.add(editor, new GridBagConstraints() {
-            {
-                gridx = 1;
-                gridy = 0;
-                fill = GridBagConstraints.BOTH;
-                weightx = weighty = 0.7;
-            }
-        });
+        frame.add(editor, BorderLayout.CENTER);
 
         menuBar = new JimeMenuBar();
         frame.setMenuBar(menuBar);
