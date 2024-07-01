@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.nio.file.Path;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -27,7 +28,7 @@ public class JimeFrame {
         BorderLayout layout = new BorderLayout();
         frame.setLayout(layout);
 
-        fileExplorer = new JimeFileExplorer();
+        fileExplorer = new JimeFileExplorer(Path.of("/Users/skovborg/Documents/jime/"));
         frame.add(fileExplorer, BorderLayout.LINE_START);
 
         editor = new JimeEditor();
