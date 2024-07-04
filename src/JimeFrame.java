@@ -13,6 +13,8 @@ public class JimeFrame {
     private final static int WIDTH = 800;
     private final static int HEIGHT = 600;
 
+    private Path rootPath = Path.of("./");
+
     public JimeFrame() {
         try {
             // Use the native top bar for Mac OS
@@ -28,19 +30,44 @@ public class JimeFrame {
         BorderLayout layout = new BorderLayout();
         frame.setLayout(layout);
 
-        fileExplorer = new JimeFileExplorer(Path.of("/Users/skovborg/Documents/jime/"));
-        frame.add(fileExplorer, BorderLayout.LINE_START);
+        this.setRootPath(rootPath);
 
         editor = new JimeEditor();
-        frame.add(editor, BorderLayout.CENTER);
+        frame.add(editor.getComponent(), BorderLayout.CENTER);
 
         menuBar = new JimeMenuBar();
         frame.setMenuBar(menuBar);
+        menuBar.bind(this);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(WIDTH, HEIGHT);
 
         /* Set frame visibility */
         frame.setVisible(true);
+    }
+
+    public void setRootPath(Path path) {
+        rootPath = path;
+        if (fileExplorer != null) {
+            frame.remove(fileExplorer.getComponent());
+            // Garbage collect the old file explorer? Or is that necessary?
+        }
+        fileExplorer = new JimeFileExplorer(rootPath);
+        frame.add(fileExplorer.getComponent(), BorderLayout.LINE_START);
+        fileExplorer.setOnFileClickedConsumer((file) -> {
+            editor.LoadFile(file.toPath());
+        });
+    }
+
+    public Path getRootPath() {
+        return rootPath;
+    }
+
+    public JimeEditor getEditor() {
+        return editor;
+    }
+
+    public JFrame getFrame() {
+        return frame;
     }
 }

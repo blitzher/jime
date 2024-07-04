@@ -1,15 +1,33 @@
+import java.awt.FileDialog;
 import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Path;
 
-import util.EventEmitter;
-import util.JimeEnum;
+import util.FileUtils;
 
 public class JimeMenuBar extends MenuBar implements ActionListener {
 
-    EventEmitter emitter = new EventEmitter();
+    private Runnable onNewFile = null;
+    private Runnable onOpenFile = null;
+    private Runnable onSaveFile = null;
+
+    private JimeFrame frameRef;
+
+    public void setOnNewFile(Runnable delegate) {
+        onNewFile = delegate;
+    }
+
+    public void setOnOpenFile(Runnable delegate) {
+        onOpenFile = delegate;
+    }
+
+    @Deprecated
+    public void setOnSaveFile(Runnable delegate) {
+        onSaveFile = delegate;
+    }
 
     public JimeMenuBar() {
         super();
@@ -30,15 +48,35 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
         add(fileMenu);
     }
 
+    public void bind(JimeFrame frame) {
+        frameRef = frame;
+
+    }
+
     public void actionPerformed(ActionEvent e) {
-        System.out.println(String.format("ActionEvent: %s", e.getActionCommand()));
+        // System.out.println(String.format("ActionEvent: %s", e.getActionCommand()));
 
         if (e.getActionCommand().equals("New")) {
-            emitter.emit(JimeEnum.NewFile);
+            if (this.onNewFile != null)
+                this.onNewFile.run();
         } else if (e.getActionCommand().equals("Open")) {
-            emitter.emit(JimeEnum.OpenFile);
+            // Open file dialog
+            FileDialog fd = new FileDialog(frameRef.getFrame(), "Choose a file", FileDialog.LOAD);
+            fd.setDirectory(".");
+            fd.setVisible(true);
+            String filename = fd.getFile();
+            if (filename == null)
+                return;
+            String directory = fd.getDirectory();
+            frameRef.setRootPath(Path.of(directory));
+
+            if (this.onOpenFile != null)
+                this.onOpenFile.run();
         } else if (e.getActionCommand().equals("Save")) {
-            emitter.emit(JimeEnum.SaveFile);
+            JimeEditor editor = frameRef.getEditor();
+            FileUtils.WriteFile(editor.getCurrentFilePath(), editor.getContent());
+            if (this.onSaveFile != null)
+                this.onSaveFile.run();
         }
 
     }
