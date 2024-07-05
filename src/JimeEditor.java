@@ -51,7 +51,6 @@ public class JimeEditor {
                 weighty = 1.0;
             }
         });
-        // add(textArea, gbc);
     }
 
     public void LoadFile(Path path) {

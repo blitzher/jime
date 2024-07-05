@@ -73,15 +73,20 @@ public class JimeFileExplorer {
             }
         });
         tree.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("Mouse clicked");
+            private void click(MouseEvent e) {
+                // Don't propogate the event to the tree after it has been handled
+                e.consume();
+
                 File file = getFileAt(e.getPoint());
                 if (file == null)
                     return;
                 if (onClickConsumer != null && file.isFile())
                     onClickConsumer.accept(file);
+            }
 
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                click(e);
             }
 
             @Override
@@ -91,6 +96,7 @@ public class JimeFileExplorer {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                click(e);
             }
 
             @Override

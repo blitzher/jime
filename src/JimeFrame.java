@@ -9,6 +9,7 @@ public class JimeFrame {
     private JFrame frame;
     private JimeEditor editor;
     private JimeFileExplorer fileExplorer;
+    private JimeInputMapManager shortcutManager;
 
     private final static int WIDTH = 800;
     private final static int HEIGHT = 600;
@@ -37,10 +38,14 @@ public class JimeFrame {
 
         menuBar = new JimeMenuBar();
         frame.setMenuBar(menuBar);
-        menuBar.bind(this);
+        menuBar.Bind(this);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(WIDTH, HEIGHT);
+
+        /* Bind keyboard shortcut manager */
+        shortcutManager = new JimeInputMapManager();
+        shortcutManager.Bind(this);
 
         /* Set frame visibility */
         frame.setVisible(true);
@@ -67,7 +72,7 @@ public class JimeFrame {
         return editor;
     }
 
-    public JFrame getFrame() {
+    public JFrame getJFrame() {
         return frame;
     }
 }

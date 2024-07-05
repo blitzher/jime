@@ -1,6 +1,7 @@
 import java.awt.FileDialog;
 import java.awt.Menu;
 import java.awt.MenuItem;
+import java.awt.MenuShortcut;
 import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +38,10 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
         MenuItem menuItemSave = new MenuItem("Save");
         // JMenuItem menuItemPrint = new JMenuItem("Print");
 
+        menuItemNew.setShortcut(new MenuShortcut('N'));
+        menuItemOpen.setShortcut(new MenuShortcut('O'));
+        menuItemSave.setShortcut(new MenuShortcut('S'));
+
         menuItemNew.addActionListener(this);
         menuItemOpen.addActionListener(this);
         menuItemSave.addActionListener(this);
@@ -48,7 +53,7 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
         add(fileMenu);
     }
 
-    public void bind(JimeFrame frame) {
+    public void Bind(JimeFrame frame) {
         frameRef = frame;
 
     }
@@ -61,7 +66,7 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
                 this.onNewFile.run();
         } else if (e.getActionCommand().equals("Open")) {
             // Open file dialog
-            FileDialog fd = new FileDialog(frameRef.getFrame(), "Choose a file", FileDialog.LOAD);
+            FileDialog fd = new FileDialog(frameRef.getJFrame(), "Choose a file", FileDialog.LOAD);
             fd.setDirectory(".");
             fd.setVisible(true);
             String filename = fd.getFile();
