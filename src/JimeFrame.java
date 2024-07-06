@@ -37,7 +37,6 @@ public class JimeFrame {
         frame.add(editor.getComponent(), BorderLayout.CENTER);
 
         menuBar = new JimeMenuBar();
-        frame.setMenuBar(menuBar);
         menuBar.Bind(this);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -48,6 +47,7 @@ public class JimeFrame {
         shortcutManager.Bind(this);
 
         /* Set frame visibility */
+        getEditor().getTextArea().requestFocus();
         frame.setVisible(true);
     }
 

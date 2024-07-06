@@ -1,6 +1,6 @@
 package util;
 
-public enum JimeEnum {
+public enum JimeMenuEnum {
     NewFile,
     OpenFile,
     SaveFile

@@ -1,17 +1,21 @@
 import java.awt.event.*;
 import java.nio.file.*;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 import util.*;
 
-public class JimeInputMapManager implements KeyListener {
+public class JimeInputMapManager {
     private final Path keyMapsPath = Path.of("./keymaps.json");
     private JSONParser parser;
     private InputMap inputMapRef;
     private ActionMap actionMapRef;
+
+    private JimeFrame frameRef;
+    private JimeEditor editorRef;
 
     public JimeInputMapManager() {
         parser = new JSONParser();
@@ -19,11 +23,14 @@ public class JimeInputMapManager implements KeyListener {
     }
 
     public void Bind(JimeFrame frame) {
-        inputMapRef = frame.getJFrame().getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        this.Load();
-        this.AddDefaultKeybindings(inputMapRef);
+        frameRef = frame;
+        editorRef = frame.getEditor();
+        inputMapRef = editorRef.getTextArea().getInputMap(JComponent.WHEN_FOCUSED);
 
-        actionMapRef = frame.getJFrame().getRootPane().getActionMap();
+        this.AddDefaultKeybindingsTo(inputMapRef);
+        // this.Load();
+
+        actionMapRef = editorRef.getTextArea().getActionMap();
         // TODO: Bind actions to relevant components, i.e. editor, file explorer, etc.
 
         this.Save();
@@ -31,7 +38,7 @@ public class JimeInputMapManager implements KeyListener {
 
     }
 
-    private void AddDefaultKeybindings(InputMap inputMap) {
+    private void AddDefaultKeybindingsTo(InputMap inputMap) {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK),
                 "jime.editor.moveLineUp");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK),
@@ -40,13 +47,17 @@ public class JimeInputMapManager implements KeyListener {
 
     private void AddActionsTo(ActionMap actionMap) {
         actionMap.put("jime.editor.moveLineUp", new JimeAction("jime.editor.moveLineUp") {
+
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Move line up");
+                frameRef.getEditor().moveLine(editorRef.getCaretLineNumber(), -1);
+
             }
         });
         actionMap.put("jime.editor.moveLineDown", new JimeAction("jime.editor.moveLineDown") {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Move line down");
+                frameRef.getEditor().moveLine(editorRef.getCaretLineNumber(), +1);
             }
         });
     }
@@ -85,24 +96,5 @@ public class JimeInputMapManager implements KeyListener {
             keyMapsArray.add(obj);
         }
         FileUtils.WriteFile(keyMapsPath, keyMapsArray.toJSONString());
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-        System.out.println("Key typed: " + e.getKeyCode());
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-
-        System.out.println("Key pressed: " + e.getKeyCode());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
-        System.out.println("Key released: " + e.getKeyCode());
     }
 }

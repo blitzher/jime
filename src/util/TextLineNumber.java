@@ -384,7 +384,7 @@ public class TextLineNumber extends JPanel
 	 * A document change may affect the number of displayed lines of text.
 	 * Therefore the lines numbers will also change.
 	 */
-	private void documentChanged() {
+	public void documentChanged() {
 		// View of the component has not been updated at the time
 		// the DocumentEvent is fired
 

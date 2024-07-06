@@ -9,13 +9,14 @@ import java.nio.file.Path;
 
 import util.FileUtils;
 
-public class JimeMenuBar extends MenuBar implements ActionListener {
+public class JimeMenuBar implements ActionListener {
 
     private Runnable onNewFile = null;
     private Runnable onOpenFile = null;
     private Runnable onSaveFile = null;
 
     private JimeFrame frameRef;
+    private MenuBar menuBar;
 
     public void setOnNewFile(Runnable delegate) {
         onNewFile = delegate;
@@ -31,7 +32,7 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
     }
 
     public JimeMenuBar() {
-        super();
+        menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
         MenuItem menuItemNew = new MenuItem("New");
         MenuItem menuItemOpen = new MenuItem("Open");
@@ -50,11 +51,12 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
         fileMenu.add(menuItemOpen);
         fileMenu.add(menuItemSave);
 
-        add(fileMenu);
+        menuBar.add(fileMenu);
     }
 
     public void Bind(JimeFrame frame) {
         frameRef = frame;
+        frame.getJFrame().setMenuBar(menuBar);
 
     }
 
@@ -62,6 +64,9 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
         // System.out.println(String.format("ActionEvent: %s", e.getActionCommand()));
 
         if (e.getActionCommand().equals("New")) {
+            JimeEditor editor = frameRef.getEditor();
+            editor.getTextArea().setText("");
+            editor.setCurrentFilePath(null);
             if (this.onNewFile != null)
                 this.onNewFile.run();
         } else if (e.getActionCommand().equals("Open")) {
@@ -79,6 +84,16 @@ public class JimeMenuBar extends MenuBar implements ActionListener {
                 this.onOpenFile.run();
         } else if (e.getActionCommand().equals("Save")) {
             JimeEditor editor = frameRef.getEditor();
+            if (editor.getCurrentFilePath() == null) {
+                FileDialog fd = new FileDialog(frameRef.getJFrame(), "Save file", FileDialog.SAVE);
+                fd.setDirectory(".");
+                fd.setVisible(true);
+                String filename = fd.getFile();
+                if (filename == null)
+                    return;
+                String directory = fd.getDirectory();
+                editor.setCurrentFilePath(Path.of(directory, filename));
+            }
             FileUtils.WriteFile(editor.getCurrentFilePath(), editor.getContent());
             if (this.onSaveFile != null)
                 this.onSaveFile.run();
