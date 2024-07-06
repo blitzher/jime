@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 
-import util.FileUtils;
+import util.FileUtilities;
 
 public class JimeMenuBar implements ActionListener {
 
@@ -94,7 +94,7 @@ public class JimeMenuBar implements ActionListener {
                 String directory = fd.getDirectory();
                 editor.setCurrentFilePath(Path.of(directory, filename));
             }
-            FileUtils.WriteFile(editor.getCurrentFilePath(), editor.getContent());
+            FileUtilities.WriteFile(editor.getCurrentFilePath(), editor.getContent());
             if (this.onSaveFile != null)
                 this.onSaveFile.run();
         }

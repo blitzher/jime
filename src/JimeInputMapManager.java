@@ -1,8 +1,6 @@
 import java.awt.event.*;
 import java.nio.file.*;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
@@ -65,7 +63,7 @@ public class JimeInputMapManager {
     public void Load() {
         if (Files.exists(keyMapsPath)) {
             try {
-                String keyMapsJson = FileUtils.ReadFile(keyMapsPath);
+                String keyMapsJson = FileUtilities.ReadFile(keyMapsPath);
                 JSONArray keyMapsArray = (JSONArray) parser.parse(keyMapsJson);
                 for (Object keyMap : keyMapsArray) {
                     JSONObject keyMapObj = (JSONObject) keyMap;
@@ -95,6 +93,6 @@ public class JimeInputMapManager {
             obj.put("action", action);
             keyMapsArray.add(obj);
         }
-        FileUtils.WriteFile(keyMapsPath, keyMapsArray.toJSONString());
+        FileUtilities.WriteFile(keyMapsPath, keyMapsArray.toJSONString());
     }
 }

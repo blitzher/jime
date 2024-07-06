@@ -54,7 +54,7 @@ public class JimeEditor {
     }
 
     public void LoadFile(Path path) {
-        textArea.setText(util.FileUtils.ReadFile(path));
+        textArea.setText(util.FileUtilities.ReadFile(path));
         currentFilePath = path;
         // TODO: Cache caret positions of previously opened files
         textArea.setCaretPosition(0);

@@ -1,6 +1,6 @@
 package util;
 
-public class FileUtils {
+public abstract class FileUtilities {
     public static String ReadFile(java.nio.file.Path path) {
         try {
             byte[] encoded = java.nio.file.Files.readAllBytes(path);
