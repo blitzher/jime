@@ -1,10 +1,5 @@
-import java.awt.FileDialog;
-import java.awt.Menu;
-import java.awt.MenuItem;
-import java.awt.MenuShortcut;
-import java.awt.MenuBar;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.nio.file.Path;
 
 import util.FileUtils;

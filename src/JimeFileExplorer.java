@@ -1,17 +1,11 @@
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreePath;
+import javax.swing.*;
+import javax.swing.tree.*;
 
 import util.FileTreeModel;
 

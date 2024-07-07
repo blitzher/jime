@@ -1,7 +1,6 @@
 import java.awt.event.*;
 import java.nio.file.*;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
